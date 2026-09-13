@@ -543,8 +543,7 @@
 
 /*
  * Auto Mouse Layer
- *
- * Trackball movement -> Layer 1
+ * Trackball -> Layer 1
  * Timeout: 700ms
  */
 &pointing_listener {
