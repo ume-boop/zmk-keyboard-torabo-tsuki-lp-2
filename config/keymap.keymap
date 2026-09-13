@@ -16,6 +16,11 @@
     };
 
     macros {
+        /*
+         * ------------------------------------------------------------
+         * Test macro
+         * ------------------------------------------------------------
+         */
         hello_macro: hello_macro {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -31,68 +36,505 @@
                 &kp O
             >;
         };
+
+
+        /*
+         * ============================================================
+         * Bracket macros
+         * ============================================================
+         */
+
+        /*
+         * ()
+         *  ^
+         */
+        double_parentheses: double_parentheses {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp LPAR
+                &kp RPAR
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * []
+         *  ^
+         */
+        double_squarebrackets: double_squarebrackets {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp LBKT
+                &kp RBKT
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * {}
+         *  ^
+         */
+        double_curlybrackets: double_curlybrackets {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp LBRC
+                &kp RBRC
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * ============================================================
+         * TeX macros
+         * ============================================================
+         */
+
+        /*
+         * \left
+         */
+        tex_left: tex_left {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp L
+                &kp E
+                &kp F
+                &kp T
+            >;
+        };
+
+
+        /*
+         * \right
+         */
+        tex_right: tex_right {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp R
+                &kp I
+                &kp G
+                &kp H
+                &kp T
+            >;
+        };
+
+
+        /*
+         * ^{}
+         *  ^
+         */
+        tex_upper: tex_upper {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp CARET
+                &kp LBRC
+                &kp RBRC
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * _{}
+         *  ^
+         */
+        tex_lower: tex_lower {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp UNDER
+                &kp LBRC
+                &kp RBRC
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * \frac{}{}
+         *       ^
+         *
+         * QMK版と同じく最初の {} の中へ戻る
+         */
+        tex_frac: tex_frac {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp F
+                &kp R
+                &kp A
+                &kp C
+                &kp LBRC
+                &kp RBRC
+                &kp LBRC
+                &kp RBRC
+                &kp LEFT
+                &kp LEFT
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * \ge
+         */
+        tex_ge: tex_ge {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp G
+                &kp E
+            >;
+        };
+
+
+        /*
+         * \le
+         */
+        tex_le: tex_le {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp L
+                &kp E
+            >;
+        };
+
+
+        /*
+         * $$
+         *  ^
+         */
+        tex_dollar: tex_dollar {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp DLLR
+                &kp DLLR
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * , \dots,
+         */
+        tex_dots: tex_dots {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp COMMA
+                &kp SPACE
+                &kp BSLH
+                &kp D
+                &kp O
+                &kp T
+                &kp S
+                &kp COMMA
+                &kp SPACE
+            >;
+        };
+
+
+        /*
+         * \[\]
+         *
+         * QMK版 TEX_SQUAREBRACKETS 相当
+         */
+        tex_squarebrackets: tex_squarebrackets {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp LBKT
+                &kp BSLH
+                &kp RBKT
+                &kp LEFT
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * \begin{}
+         *
+         * \end{}
+         *
+         * QMK版 TEX_BIGIN_END 相当
+         */
+        tex_begin_end: tex_begin_end {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp B
+                &kp E
+                &kp G
+                &kp I
+                &kp N
+                &kp LBRC
+                &kp RBRC
+
+                &kp ENTER
+                &kp ENTER
+
+                &kp BSLH
+                &kp E
+                &kp N
+                &kp D
+                &kp LBRC
+                &kp RBRC
+
+                &kp UP
+                &kp UP
+                &kp END
+                &kp LEFT
+            >;
+        };
+
+
+        /*
+         * \begin{align*}
+         *
+         * \end{align*}
+         *
+         * 最後に1行上へ戻る
+         */
+        tex_align_astr: tex_align_astr {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <30>;
+            tap-ms = <30>;
+
+            bindings = <
+                &kp BSLH
+                &kp B
+                &kp E
+                &kp G
+                &kp I
+                &kp N
+                &kp LBRC
+                &kp A
+                &kp L
+                &kp I
+                &kp G
+                &kp N
+                &kp ASTRK
+                &kp RBRC
+
+                &kp ENTER
+                &kp ENTER
+
+                &kp BSLH
+                &kp E
+                &kp N
+                &kp D
+                &kp LBRC
+                &kp A
+                &kp L
+                &kp I
+                &kp G
+                &kp N
+                &kp ASTRK
+                &kp RBRC
+
+                &kp UP
+            >;
+        };
     };
+
+
+    /*
+     * ================================================================
+     * Keymap
+     * ================================================================
+     *
+     * Layer 0 : Base
+     * Layer 1 : Mouse
+     * Layer 2 : Brackets / Cursor / punctuation
+     * Layer 3 : Programming / TeX / Numbers
+     * Layer 4 : Settings（今回は未設定）
+     * ================================================================
+     */
 
     keymap {
         compatible = "zmk,keymap";
 
+
+        /*
+         * ============================================================
+         * Layer 0
+         * Base
+         * ============================================================
+         */
         layer_0 {
             bindings = <
 &kp ESC    &kp N1     &kp N2    &kp N3    &kp N4    &kp N5                                                   &kp N6       &kp N7    &kp N8     &kp N9    &kp N0        &kp BSPC
 &kp TAB    &kp Q      &kp W     &kp E     &kp R     &kp T                                                    &kp Y        &kp U     &kp I      &kp O     &kp P         &kp BSPC
 &kp CAPS   &kp A      &kp S     &kp D     &kp F     &kp G        &mkp LCLK                       &mkp RCLK   &kp H        &kp J     &kp K      &kp L     &kp MINUS     &kp SQT
 &kp LSHFT  &kp Z      &kp X     &kp C     &kp V     &kp B        &kp SPACE                       &kp RET     &kp N        &kp M     &kp COMMA  &kp DOT   &kp TILDE     &kp RSHFT
-&kp LCTRL  &kp LCTRL  &kp LGUI  &kp TAB  &mt LSHIFT LANGUAGE_2  &kp SPACE  &mt LCTRL LANGUAGE_1  &lt 5 BSPC  &lt 4 ENTER  &kp BSPC  &kp RALT   &kp RGUI  &kp RCTRL     &kp RCTRL
+&kp LCTRL  &kp LCTRL  &kp LGUI  &kp TAB   &mt LSHIFT LANGUAGE_2  &kp SPACE  &mt LCTRL LANGUAGE_1  &lt 3 BSPC  &lt 2 ENTER &kp BSPC  &kp RALT   &kp RGUI  &kp RCTRL     &kp RCTRL
             >;
         };
 
+
+        /*
+         * ============================================================
+         * Layer 1
+         * Mouse
+         *
+         * torabo-tsuki-Lp側の既存設定を維持
+         * ============================================================
+         */
         layer_1 {
             bindings = <
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans     &trans        &trans     &trans     &trans    &trans
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans     &kp LC(LCLK)  &mo 3      &trans     &trans    &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &kp LC(S)  &mkp LCLK     &mo 2      &mkp RCLK  &kp LC(T)    &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &kp LC(Z)  &kp LC(X)     &kp LC(C)  &kp LC(V)  &kp LC(Y) &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans     &trans        &trans     &trans     &trans    &trans
+&trans  &trans  &trans  &trans     &trans     &trans                  &trans     &trans        &trans     &trans     &trans     &trans
+&trans  &trans  &trans  &trans     &trans     &trans                  &trans     &kp LC(LCLK)  &mo 3      &trans     &trans     &trans
+&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &kp LC(S)  &mkp LCLK     &mo 2      &mkp RCLK  &kp LC(T)  &trans
+&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &kp LC(Z)  &kp LC(X)     &kp LC(C)  &kp LC(V)  &kp LC(Y)  &trans
+&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans     &trans        &trans     &trans     &trans     &trans
             >;
         };
 
+
+        /*
+         * ============================================================
+         * Layer 2
+         *
+         * 左:
+         * `  '  \left  \right  ()
+         * <  >  {      }       {}
+         * \le \ge [    ]        []
+         *
+         * 右:
+         * Space  (     ↑     )      Del
+         * Home   ←     ↓     →      End
+         * !      ?     ;     :      "
+         * ============================================================
+         */
         layer_2 {
             bindings = <
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans                   &trans                   &trans              &trans               &trans                         &trans           &trans          &trans           &trans          &trans           &trans
+&trans  &kp GRAVE                &kp SQT                  &tex_left           &tex_right           &double_parentheses            &kp SPACE        &kp LPAR        &kp UP          &kp RPAR        &kp DEL          &trans
+&trans  &kp LT                   &kp GT                   &kp LBRC            &kp RBRC              &double_curlybrackets  &trans  &trans  &mt RCTRL HOME  &kp LEFT        &kp DOWN        &kp RIGHT       &kp END          &trans
+&trans  &tex_le                  &tex_ge                  &kp LBKT            &kp RBKT              &double_squarebrackets &trans  &trans  &kp EXCL        &kp QMARK       &kp SEMI        &kp COLON       &kp DQT          &trans
+&trans  &trans                   &trans                   &trans              &trans                &trans                 &trans  &trans  &trans          &trans          &trans          &trans          &trans           &trans
             >;
         };
 
+
+        /*
+         * ============================================================
+         * Layer 3
+         *
+         * 左:
+         * @   |      \frac   \begin...\end   align*
+         * %   _{}    ^{}     \                $
+         * #   _      ^       &                \[\]
+         *
+         * 右:
+         * 5 6 7 8 9
+         * 0 1 2 3 4
+         * + - * / =
+         * ============================================================
+         */
         layer_3 {
             bindings = <
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans      &trans      &trans           &trans           &trans                                &trans     &trans     &trans     &trans     &trans     &trans
+&trans  &kp AT      &kp PIPE    &tex_frac        &tex_begin_end   &tex_align_astr                       &kp N5     &kp N6     &kp N7     &kp N8     &kp N9     &trans
+&trans  &kp PRCNT   &tex_lower  &tex_upper       &kp BSLH         &kp DLLR           &trans  &trans      &kp N0     &kp N1     &kp N2     &kp N3     &kp N4     &trans
+&trans  &kp HASH    &kp UNDER   &kp CARET        &kp AMPS         &tex_squarebrackets &trans &trans      &kp PLUS   &kp MINUS  &kp ASTRK  &kp FSLH   &kp EQUAL  &trans
+&trans  &trans      &trans      &trans           &trans           &trans              &trans &trans      &trans     &trans     &trans     &trans     &trans     &trans
             >;
         };
 
+
+        /*
+         * ============================================================
+         * Layer 4
+         * Settings
+         *
+         * QMK側 Layer 4 は Keyball / RGB 設定なので、
+         * ZMK用への変換は次の段階で行う。
+         * ============================================================
+         */
         layer_4 {
             bindings = <
-&trans  &trans            &trans      &trans      &trans      &trans                      &trans          &trans        &trans            &trans             &trans         &trans
-&trans  &kp GRAVE         &kp SQT           &trans      &trans      &trans                      &kp SPACE       &kp LPAR      &kp UP            &kp RPAR           &kp DEL        &trans
-&trans  &kp LT            &kp GT            &kp LBRC    &kp RBRC    &kp N5      &trans  &trans  &kp HOME        &kp LEFT      &kp DOWN          &kp RIGHT          &kp END        &trans
-&trans  &kp N6            &kp N7            &kp LBKT    &kp RBKT    &kp N0      &trans  &trans  &kp EXCL        &kp QMARK     &kp SEMI          &kp COLON          &kp DQT        &trans
-&trans  &trans            &trans            &trans      &trans      &trans      &trans  &trans  &trans          &trans        &trans            &trans             &trans         &trans
-            >;
-        };
-
-        layer_5 {
-            bindings = <
-&trans  &trans      &trans    &trans        &trans        &trans                      &trans            &trans     &trans         &trans     &trans     &trans
-&trans  &kp AT      &kp PIPE  &trans        &trans        &trans                      &kp N5            &kp N6     &kp N7         &kp N8     &kp N9     &trans
-&trans  &kp PRCNT   &trans    &trans        &kp BSLH      &kp DLLR    &trans  &trans  &kp N0            &kp N1     &kp N2         &kp N3     &kp N4     &trans
-&trans  &kp HASH    &kp UNDER &kp CARET     &kp AMPS      &trans      &trans  &trans  &kp PLUS          &kp MINUS  &kp ASTRK      &kp FSLH   &kp EQUAL  &trans
-&trans  &trans      &trans    &trans        &kp DELETE    &kp TAB     &trans  &trans  &trans            &trans     &trans         &trans     &trans     &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
