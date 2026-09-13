@@ -16,36 +16,90 @@
 
     input_processors {
         /*
-         * Vertical scroll only
+         * Auto Mouse Layer
          *
-         * XY -> scroll 変換後、
-         * horizontal wheel を vertical wheel にまとめる
+         * 通常キーを押すとLayer 1を解除。
+         * 下記のマウス操作系キーだけはLayer 1を維持する。
          */
-        vertical_only_scroll: vertical_only_scroll {
-            compatible = "zmk,input-processor-code-mapper";
-            #input-processor-cells = <0>;
+        auto_mouse_layer: auto_mouse_layer {
+            compatible = "zmk,input-processor-temp-layer";
+            #input-processor-cells = <2>;
 
-            type = <INPUT_EV_REL>;
+            /*
+             * 通常キーを押した直後にトラックボールの微小入力で
+             * Mouse Layerがすぐ復活するのを防ぐ。
+             */
+            require-prior-idle-ms = <100>;
 
-            map = <
-                INPUT_REL_HWHEEL INPUT_REL_WHEEL
+            /*
+             * AMLを解除しないキー位置。
+             *
+             * 19 : Ctrl + Click
+             * 20 : Horizontal Scroll
+             *
+             * 30 : Base側 Left Click
+             * 31 : Base側 Right Click
+             * 32 : Ctrl+S
+             * 33 : Left Click
+             * 34 : Vertical Scroll
+             * 35 : Right Click
+             * 36 : Ctrl+T
+             *
+             * 46-50 : Ctrl+Z/X/C/V/Y
+             */
+            excluded-positions = <
+                19 20
+                30 31 32 33 34 35 36
+                46 47 48 49 50
             >;
         };
 
+
         /*
-         * Horizontal scroll only
+         * ============================================================
+         * Vertical Scroll Mapper
+         * ============================================================
          *
-         * XY -> scroll 変換後、
-         * vertical wheel を horizontal wheel にまとめる
+         * X = 完全に無視
+         * Y = Vertical Wheel
+         *
+         * INPUT_REL_MISC はZMKのマウスHID処理では使用されないため、
+         * X方向の微小なブレが縦スクロールへ混ざらなくなる。
          */
-        horizontal_only_scroll: horizontal_only_scroll {
+
+        vertical_scroll_mapper: vertical_scroll_mapper {
             compatible = "zmk,input-processor-code-mapper";
             #input-processor-cells = <0>;
 
             type = <INPUT_EV_REL>;
 
             map = <
-                INPUT_REL_WHEEL INPUT_REL_HWHEEL
+                INPUT_REL_X INPUT_REL_MISC
+                INPUT_REL_Y INPUT_REL_WHEEL
+            >;
+        };
+
+
+        /*
+         * ============================================================
+         * Horizontal Scroll Mapper
+         * ============================================================
+         *
+         * X = Horizontal Wheel
+         * Y = 完全に無視
+         *
+         * Y方向の微小なブレが横スクロールへ混ざらなくなる。
+         */
+
+        horizontal_scroll_mapper: horizontal_scroll_mapper {
+            compatible = "zmk,input-processor-code-mapper";
+            #input-processor-cells = <0>;
+
+            type = <INPUT_EV_REL>;
+
+            map = <
+                INPUT_REL_X INPUT_REL_HWHEEL
+                INPUT_REL_Y INPUT_REL_MISC
             >;
         };
     };
@@ -706,6 +760,12 @@
  * AML timeout:
  * 700ms
  *
+ * Mouse speed:
+ * 6 / 5 = 1.2x
+ *
+ * Scroll speed:
+ * 6 / 5 = 1.2x
+ *
  * Layer 5:
  * Horizontal Scroll
  *
@@ -722,6 +782,7 @@
      * ================================================================
      *
      * X/Y両方を反転
+     * Speed = 6/5
      *
      * Trackball movement
      * -> Layer 1
@@ -733,7 +794,7 @@
     input-processors = <
         &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
         &zip_xy_scaler 6 5
-        &zip_temp_layer 1 700
+        &auto_mouse_layer 1 700
     >;
 
 
@@ -744,8 +805,8 @@
      *
      * Layer 5中のみ
      *
-     * スクロールについては現在正常に動いているため
-     * X/Y反転は入れない
+     * 左右方向は現在の希望どおり反転。
+     * Y方向は完全に無視。
      */
 
     horizontal_scroll_mode {
@@ -753,10 +814,9 @@
 
         input-processors = <
             &zip_xy_transform INPUT_TRANSFORM_X_INVERT
-            &zip_xy_to_scroll_mapper
-            &horizontal_only_scroll
+            &horizontal_scroll_mapper
             &zip_scroll_scaler 6 5
-            &zip_temp_layer 1 700
+            &auto_mouse_layer 1 700
         >;
     };
 
@@ -768,18 +828,17 @@
      *
      * Layer 6中のみ
      *
-     * スクロールについては現在正常に動いているため
-     * X/Y反転は入れない
+     * Y方向だけをスクロールとして使用。
+     * X方向は完全に無視。
      */
 
     vertical_scroll_mode {
         layers = <6>;
 
         input-processors = <
-            &zip_xy_to_scroll_mapper
-            &vertical_only_scroll
+            &vertical_scroll_mapper
             &zip_scroll_scaler 6 5
-            &zip_temp_layer 1 700
+            &auto_mouse_layer 1 700
         >;
     };
 };
