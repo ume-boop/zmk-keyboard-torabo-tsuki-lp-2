@@ -732,6 +732,7 @@
 
     input-processors = <
         &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
+        &zip_xy_scaler 6 5
         &zip_temp_layer 1 700
     >;
 
@@ -754,6 +755,7 @@
             &zip_xy_transform INPUT_TRANSFORM_X_INVERT
             &zip_xy_to_scroll_mapper
             &horizontal_only_scroll
+            &zip_scroll_scaler 6 5
             &zip_temp_layer 1 700
         >;
     };
@@ -776,6 +778,7 @@
         input-processors = <
             &zip_xy_to_scroll_mapper
             &vertical_only_scroll
+            &zip_scroll_scaler 6 5
             &zip_temp_layer 1 700
         >;
     };
