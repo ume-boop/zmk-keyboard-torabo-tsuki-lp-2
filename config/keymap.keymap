@@ -1,6 +1,7 @@
 #include <behaviors.dtsi>
 #include <input/processors.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <dt-bindings/zmk/input_transform.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
@@ -9,18 +10,16 @@
 / {
     /*
      * ================================================================
-     * Custom input processors
+     * Input Processors
      * ================================================================
-     *
-     * QMK版の縦/横スクロールに近づけるためのProcessor
      */
 
     input_processors {
         /*
-         * 縦スクロール専用
+         * Vertical scroll only
          *
-         * XY -> Scroll変換後、
-         * Horizontal WheelをVertical Wheelへ変換
+         * XY -> scroll 変換後、
+         * horizontal wheel を vertical wheel にまとめる
          */
         vertical_only_scroll: vertical_only_scroll {
             compatible = "zmk,input-processor-code-mapper";
@@ -34,10 +33,10 @@
         };
 
         /*
-         * 横スクロール専用
+         * Horizontal scroll only
          *
-         * XY -> Scroll変換後、
-         * Vertical WheelをHorizontal Wheelへ変換
+         * XY -> scroll 変換後、
+         * vertical wheel を horizontal wheel にまとめる
          */
         horizontal_only_scroll: horizontal_only_scroll {
             compatible = "zmk,input-processor-code-mapper";
@@ -76,6 +75,34 @@
      */
 
     macros {
+        /*
+         * ------------------------------------------------------------
+         * Ctrl + Left Click
+         *
+         * QMK:
+         * KEEP_AML_Cclick 相当
+         *
+         * Ctrl押下
+         * ↓
+         * 左クリック
+         * ↓
+         * Ctrl解放
+         * ------------------------------------------------------------
+         */
+
+        ctrl_click: ctrl_click {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+
+            wait-ms = <20>;
+            tap-ms = <30>;
+
+            bindings =
+                <&macro_press &kp LCTRL>,
+                <&macro_tap &mkp LCLK>,
+                <&macro_release &kp LCTRL>;
+        };
+
 
         /*
          * ------------------------------------------------------------
@@ -105,6 +132,7 @@
          * Bracket macros
          * ============================================================
          */
+
 
         /*
          * ()
@@ -494,8 +522,8 @@
      * Layer 2 : Brackets / Cursor / punctuation
      * Layer 3 : Programming / TeX / Numbers
      * Layer 4 : Settings
-     * Layer 5 : Horizontal scroll
-     * Layer 6 : Vertical scroll
+     * Layer 5 : Horizontal Scroll
+     * Layer 6 : Vertical Scroll
      * ================================================================
      */
 
@@ -526,18 +554,32 @@
          * Layer 1
          * Mouse
          *
-         * 上側のスクロールキー:
-         *   横スクロール Layer 5
+         * QMK版:
          *
-         * 下側のスクロールキー:
-         *   縦スクロール Layer 6
+         * 上側:
+         * Ctrl + Click
+         * Horizontal Scroll
+         *
+         * 中央:
+         * Ctrl+S
+         * Left Click
+         * Vertical Scroll
+         * Right Click
+         * Ctrl+T
+         *
+         * 下側:
+         * Ctrl+Z
+         * Ctrl+X
+         * Ctrl+C
+         * Ctrl+V
+         * Ctrl+Y
          * ============================================================
          */
 
         layer_1 {
             bindings = <
 &trans  &trans  &trans  &trans     &trans     &trans                  &trans     &trans        &trans     &trans     &trans     &trans
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans     &kp LC(LCLK)  &mo 5      &trans     &trans     &trans
+&trans  &trans  &trans  &trans     &trans     &trans                  &trans     &ctrl_click   &mo 5      &trans     &trans     &trans
 &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &kp LC(S)  &mkp LCLK     &mo 6      &mkp RCLK  &kp LC(T)  &trans
 &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &kp LC(Z)  &kp LC(X)     &kp LC(C)  &kp LC(V)  &kp LC(Y)  &trans
 &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans     &trans        &trans     &trans     &trans     &trans
@@ -548,6 +590,7 @@
         /*
          * ============================================================
          * Layer 2
+         *
          * Brackets / Cursor / punctuation
          * ============================================================
          */
@@ -566,6 +609,7 @@
         /*
          * ============================================================
          * Layer 3
+         *
          * Programming / TeX / Numbers
          * ============================================================
          */
@@ -602,9 +646,10 @@
         /*
          * ============================================================
          * Layer 5
+         *
          * Horizontal Scroll
          *
-         * Layer 1 の上側スクロールキーを
+         * Layer 1の横スクロールキーを
          * 押している間だけ有効
          * ============================================================
          */
@@ -623,9 +668,10 @@
         /*
          * ============================================================
          * Layer 6
+         *
          * Vertical Scroll
          *
-         * Layer 1 の下側スクロールキーを
+         * Layer 1の縦スクロールキーを
          * 押している間だけ有効
          * ============================================================
          */
@@ -649,33 +695,43 @@
  * ====================================================================
  *
  * 通常:
- *   Trackball -> Mouse Cursor
+ * Trackball
+ *   ↓
+ * X/Y反転
+ *   ↓
+ * Mouse Cursor
+ *   ↓
+ * Layer 1 Auto Mouse Layer
  *
- * Trackballを動かす:
- *   Layer 1 = Mouse Layer
- *
- * Timeout:
- *   700ms
+ * AML timeout:
+ * 700ms
  *
  * Layer 5:
- *   Horizontal Scroll
+ * Horizontal Scroll
  *
  * Layer 6:
- *   Vertical Scroll
+ * Vertical Scroll
  * ====================================================================
  */
 
 &pointing_listener {
 
     /*
-     * Auto Mouse Layer
+     * ================================================================
+     * Normal Mouse
+     * ================================================================
+     *
+     * X/Y両方を反転
      *
      * Trackball movement
      * -> Layer 1
-     * -> 700ms後に解除
+     *
+     * Timeout
+     * -> 700ms
      */
 
     input-processors = <
+        &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
         &zip_temp_layer 1 700
     >;
 
@@ -685,13 +741,10 @@
      * Horizontal Scroll
      * ================================================================
      *
-     * Layer 5 の間:
+     * Layer 5中のみ
      *
-     * X/Y
-     * ↓
-     * Scroll
-     * ↓
-     * Horizontal Wheel
+     * スクロールについては現在正常に動いているため
+     * X/Y反転は入れない
      */
 
     horizontal_scroll_mode {
@@ -710,13 +763,10 @@
      * Vertical Scroll
      * ================================================================
      *
-     * Layer 6 の間:
+     * Layer 6中のみ
      *
-     * X/Y
-     * ↓
-     * Scroll
-     * ↓
-     * Vertical Wheel
+     * スクロールについては現在正常に動いているため
+     * X/Y反転は入れない
      */
 
     vertical_scroll_mode {
